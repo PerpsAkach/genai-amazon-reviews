@@ -17,7 +17,7 @@ def test_default_config_is_valid():
         PipelineConfig(sentiment_model=""),
         PipelineConfig(max_input_tokens=0),
         PipelineConfig(max_new_tokens=0),
-        PipelineConfig(sentiment_character_limit=0),
+        PipelineConfig(sentiment_max_tokens=0),
     ],
 )
 def test_invalid_configurations_are_rejected(config):
