@@ -17,9 +17,12 @@ This document distinguishes what the current public repository implements from h
 - Write prediction records as CSV, JSON, JSONL, or NDJSON.
 - Write evaluation metrics as JSON.
 - Evaluate exact star accuracy, within-one-star accuracy, mean absolute error, quadratic weighted kappa, and a fixed 5×5 confusion matrix.
-- Support deterministic unit testing through injected tokenizer/generator/sentiment doubles without model or dataset downloads.
-- Validate source compilation, tests, CLI argument surface, Ruff linting, and declared dependencies in GitHub Actions.
-- Test under Python 3.11, 3.12, and 3.13.
+- Support deterministic unit testing through injected tokenizer/generator/sentiment doubles and an injectable dataset loader.
+- Maintain a 34-test automated suite across Python 3.11, 3.12, and 3.13.
+- Validate source compilation and the CLI argument surface in the test matrix.
+- Run Ruff as an independent code-quality gate.
+- Run `pip-audit` against the full declared runtime requirements; the current audited dependency ranges are clean.
+- Install and import the complete Hugging Face/PyTorch runtime stack in a separate Python 3.12 compatibility gate.
 
 ## Deliberately not claimed
 
@@ -33,7 +36,7 @@ This document distinguishes what the current public repository implements from h
 
 ## External-runtime boundary
 
-A real pipeline run requires internet access on first use to retrieve the configured Hugging Face dataset and pretrained model assets. CI intentionally validates local code behavior with deterministic test doubles rather than repeatedly downloading and executing large remote model artifacts.
+A real pipeline run requires internet access on first use to retrieve the configured Hugging Face dataset and pretrained model assets. CI does not repeatedly download and execute the remote dataset/model payloads for behavioral testing. Instead, local logic is exercised with deterministic injected doubles, while a separate compatibility job installs and imports the complete declared runtime stack.
 
 ## Appropriate future extensions
 
