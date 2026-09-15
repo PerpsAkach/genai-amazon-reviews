@@ -15,7 +15,7 @@ class PipelineConfig:
     sentiment_model: str = "nlptown/bert-base-multilingual-uncased-sentiment"
     max_input_tokens: int = 512
     max_new_tokens: int = 100
-    sentiment_character_limit: int = 4000
+    sentiment_max_tokens: int = 512
 
     def validate(self) -> None:
         required_strings = {
@@ -33,8 +33,8 @@ class PipelineConfig:
             raise ValueError("max_input_tokens must be positive")
         if self.max_new_tokens <= 0:
             raise ValueError("max_new_tokens must be positive")
-        if self.sentiment_character_limit <= 0:
-            raise ValueError("sentiment_character_limit must be positive")
+        if self.sentiment_max_tokens <= 0:
+            raise ValueError("sentiment_max_tokens must be positive")
 
 
 DEFAULT_CONFIG = PipelineConfig()
