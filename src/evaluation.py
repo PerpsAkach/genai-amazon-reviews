@@ -29,7 +29,7 @@ def evaluate_sentiment_predictions(df: pd.DataFrame) -> dict[str, Any]:
     qwk = cohen_kappa_score(y_true, y_pred, weights="quadratic")
 
     return {
-        "n": int(len(df)),
+        "n": len(df),
         "exact_accuracy": float((y_true == y_pred).mean()),
         "within_one_star_accuracy": float((error <= 1).mean()),
         "mean_absolute_error": float(error.mean()),
