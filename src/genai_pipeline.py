@@ -96,7 +96,9 @@ class ReviewGenAIPipeline:
 
         text = review["text"].strip()
         sentiment_result = self.sentiment(
-            text[: self.config.sentiment_character_limit]
+            text,
+            truncation=True,
+            max_length=self.config.sentiment_max_tokens,
         )[0]
 
         result: dict[str, Any] = {
