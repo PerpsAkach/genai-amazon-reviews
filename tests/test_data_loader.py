@@ -1,6 +1,6 @@
 import pytest
 
-import src.data_loader as data_loader
+from src import data_loader
 
 
 class FakeDataset:
