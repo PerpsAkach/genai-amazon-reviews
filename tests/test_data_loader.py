@@ -14,7 +14,7 @@ class FakeDataset:
         return FakeDataset([self.rows[index] for index in indices])
 
 
-def test_loader_applies_limit_without_exceeding_dataset(monkeypatch):
+def test_loader_applies_limit_without_exceeding_dataset():
     fake = FakeDataset([{"text": str(i), "rating": 5} for i in range(3)])
 
     def fake_load_dataset(name, config, split):
@@ -23,8 +23,10 @@ def test_loader_applies_limit_without_exceeding_dataset(monkeypatch):
         assert split == "full"
         return fake
 
-    monkeypatch.setattr(data_loader, "load_dataset", fake_load_dataset)
-    loaded = data_loader.load_video_game_reviews(limit=10)
+    loaded = data_loader.load_video_game_reviews(
+        limit=10,
+        dataset_loader=fake_load_dataset,
+    )
     assert len(loaded) == 3
 
 
