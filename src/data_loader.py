@@ -22,9 +22,10 @@ def load_video_game_reviews(
     cfg = config or PipelineConfig()
     cfg.validate()
 
-    if limit is not None:
-        if isinstance(limit, bool) or not isinstance(limit, int) or limit <= 0:
-            raise ValueError("limit must be a positive integer when provided")
+    if limit is not None and (
+        isinstance(limit, bool) or not isinstance(limit, int) or limit <= 0
+    ):
+        raise ValueError("limit must be a positive integer when provided")
 
     dataset = load_dataset(cfg.dataset_name, cfg.review_config, split=cfg.split)
     if limit is not None:
