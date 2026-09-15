@@ -25,8 +25,10 @@ class FakeGenerator:
 
 
 class FakeSentiment:
-    def __call__(self, text):
+    def __call__(self, text, **kwargs):
         assert text
+        assert kwargs["truncation"] is True
+        assert kwargs["max_length"] == 128
         return [{"label": "4 stars", "score": 0.91}]
 
 
@@ -67,7 +69,7 @@ def test_validate_review_rejects_invalid_record(record):
 
 def test_pipeline_uses_injected_models_without_network_access():
     processor = ReviewGenAIPipeline(
-        PipelineConfig(sentiment_character_limit=12),
+        PipelineConfig(sentiment_max_tokens=128),
         tokenizer=FakeTokenizer(),
         generator=FakeGenerator(),
         sentiment=FakeSentiment(),
