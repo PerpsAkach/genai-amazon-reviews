@@ -53,14 +53,15 @@ class ReviewGenAIPipeline:
         self.sentiment = sentiment
 
     def _ensure_models(self) -> None:
-        if self.tokenizer is not None and self.generator is not None and self.sentiment is not None:
+        if (
+            self.tokenizer is not None
+            and self.generator is not None
+            and self.sentiment is not None
+        ):
             return
 
-        from transformers import (
-            AutoModelForSeq2SeqLM,
-            AutoTokenizer,
-            pipeline as hf_pipeline,
-        )
+        from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+        from transformers import pipeline as hf_pipeline
 
         if self.tokenizer is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.config.generator_model)
