@@ -1,3 +1,4 @@
+import argparse
 import json
 
 import pandas as pd
@@ -11,7 +12,7 @@ def test_positive_int_accepts_positive_value():
 
 
 def test_positive_int_rejects_zero():
-    with pytest.raises(Exception):
+    with pytest.raises(argparse.ArgumentTypeError):
         positive_int("0")
 
 
