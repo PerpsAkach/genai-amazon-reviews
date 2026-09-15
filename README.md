@@ -132,22 +132,27 @@ python run_pipeline.py \
 
 ## Tests and CI
 
-GitHub Actions validates the repository on Python 3.11, 3.12, and 3.13. The workflow performs:
+The current automated suite contains **34 tests**. GitHub Actions validates the lean, network-independent test surface on Python 3.11, 3.12, and 3.13 using `requirements-test.txt`.
 
 ```text
-Dependency installation
+Lean test matrix (Python 3.11 / 3.12 / 3.13)
         ↓
 Source compilation
         ↓
-Unit tests using deterministic model doubles
+34 deterministic unit/integration tests
         ↓
 CLI argument-surface validation
-
-Ruff linting runs as a separate quality gate.
-pip-audit runs as a separate dependency-security gate.
 ```
 
-CI deliberately does not redownload and execute the large remote models/dataset on every run. Model objects are injectable, allowing local behavior to be tested deterministically without network access while preserving the real Hugging Face runtime path for actual inference.
+Separate CI gates provide:
+
+- **Ruff linting** for source/tests/CLI code;
+- **pip-audit** against the full declared runtime dependency set;
+- a **Python 3.12 runtime-compatibility job** that installs the complete Hugging Face/PyTorch stack and verifies imports.
+
+The runtime gate has successfully installed and imported the current allowed dependency ranges, while the dependency-security gate reports no known vulnerabilities for the declared runtime requirements.
+
+CI deliberately does not redownload and execute the large remote models/dataset on every run. Dataset/model access is lazy and injectable, allowing local logic to be tested deterministically without network access while preserving the real Hugging Face runtime path for actual inference.
 
 Test coverage includes configuration validation, review validation, bounded dataset sampling, star-label parsing, injected-model execution, token-aware sentiment truncation, ordinal evaluation, confusion-matrix shape, and CSV/JSON/JSONL serialization.
 
@@ -177,6 +182,7 @@ tests/
 IMPLEMENTATION_STATUS.md
 PROVENANCE.md
 README.md
+requirements-test.txt
 requirements.txt
 run_pipeline.py
 ```
